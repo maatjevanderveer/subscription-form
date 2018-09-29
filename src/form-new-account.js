@@ -1,7 +1,7 @@
 import React from 'react';
-import { Field } from 'formik';
+import { Field, ErrorMessage } from 'formik';
 
-export class Page3 extends React.Component {
+export class FormNewAccount extends React.Component {
     render() {
         return(
             <React.Fragment>
@@ -14,9 +14,12 @@ export class Page3 extends React.Component {
                        autoComplete="email"
                        placeholder="E-mailadres"
                        autoFocus={true}/>
+                    <ErrorMessage name="email">
+                        {msq => <div>{msq}</div>}
+                    </ErrorMessage>
                 </label>
                 <label>Wachtwoord
-                <Field type="text"
+                <Field type="password"
                        name="password"
                        placeholder="E-mailadres"/>
                 </label>

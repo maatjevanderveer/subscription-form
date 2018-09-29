@@ -1,7 +1,9 @@
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
+import * as Yup from "yup";
+import PropTypes from 'prop-types';
 
-export class Page1 extends React.Component {
+export class FormPersonalDetails extends React.Component {
    render() {
        return(
            <React.Fragment>
@@ -11,6 +13,9 @@ export class Page1 extends React.Component {
                           autoComplete="given-name"
                           placeholder="Voornaam"
                           autoFocus={true}/>
+                   <ErrorMessage name="firstName">
+                       {msq => <div>{msq}</div>}
+                   </ErrorMessage>
                </label>
                <br />
                <label>Achternaam:
@@ -18,13 +23,20 @@ export class Page1 extends React.Component {
                           name="lastName"
                           autoComplete="family-name"
                           placeholder="Achternaam"/>
+                   <ErrorMessage name="lastName">
+                       {msq => <div>{msq}</div>}
+                   </ErrorMessage>
                </label>
                <br />
                <label>Geboortedatum:
                    <Field type="numeric"
                           name="bdayDay"
                           autoComplete="bday-day"
-                          placeholder="Dag"/>
+                          placeholder="Dag"
+                          maxLength="2"/>
+                   <ErrorMessage name="bdayDay">
+                       {msq => <div>{msq}</div>}
+                   </ErrorMessage>
                    <Field component="select"
                           name="bdayMonth"
                           autoComplete="bday-month"
@@ -45,9 +57,14 @@ export class Page1 extends React.Component {
                    <Field type="numeric"
                           name="bdayYear"
                           autoComplete="bday-year"
-                          placeholder="Jaar"/>
+                          placeholder="Jaar"
+                          maxLength="4"/>
+                   <ErrorMessage name="bdayYear">
+                       {msq => <div>{msq}</div>}
+                   </ErrorMessage>
                </label>
-               <label>Geslacht:
+               <br />
+               <label>Geslacht - optioneel:
                    <Field type="radio"
                           name="gender"
                           value="vrouw"
@@ -64,7 +81,13 @@ export class Page1 extends React.Component {
                           id="anders" />
                    <label htmlFor="anders">Anders</label>
                </label>
+               <br />
            </React.Fragment>
        )
    }
 }
+
+FormPersonalDetails.propTypes = {
+    errors: PropTypes.bool,
+    touched: PropTypes.string
+};
