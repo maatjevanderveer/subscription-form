@@ -1,0 +1,15 @@
+html body {
+    background: white;
+}
+
+.logo-icon {
+    width: 128px;
+    margin-top: 22px;
+}
+
+.app {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 1120px;
+}
