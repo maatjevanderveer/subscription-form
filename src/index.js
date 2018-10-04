@@ -1,5 +1,5 @@
 import React from 'react';
-import {Formik, Form, ErrorMessage, Field} from 'formik';
+import { Formik, Form } from 'formik';
 import './styles.css';
 import {FormPersonalDetails} from './form-personal-details.js';
 import {FormShippingAddress} from './form-shipping-address.js';
@@ -8,7 +8,6 @@ import * as Yup from 'yup';
 import _ from 'underscore';
 
 const pages = [<FormPersonalDetails/>, <FormShippingAddress/>, <FormNewAccount/>];
-
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -20,27 +19,34 @@ const validationSchema = Yup.object().shape({
         .max(100, 'Te lang')
         .required('Verplicht'),
     bdayDay: Yup.number()
-        .integer('Vul een getal in')
-        .positive('Ongeldig')
-        .lessThan(32, 'Ongeldig')
+        .integer('Vul een geldige geboortedag in')
+        .positive('Vul een geldige geboortedag in')
+        .max(31, 'Vul een geldige geboortedag in')
+        .required('Verplicht'),
+    bdayMonth: Yup.number()
+        .integer('Vul een geldige geboortemaand in')
+        .positive('Vul een geldige geboortemaand in')
+        .max(12, 'Vul een geldige geboortemaand in')
         .required('Verplicht'),
     bdayYear: Yup.number()
-        .integer('Vul een getal in')
-        .positive('Ongeldig')
+        .integer('Vul een geldig geboortejaar in')
+        .positive('Vul een geldig geboortejaar in')
         .max(2018, 'Ben je in de toekomst geboren?')
-        .min(1900, 'Ongeldig')
+        .min(1900, 'Vul een geldig geboortejaar in')
         .required('Verplicht'),
     postalCode: Yup.string()
-        .matches(/^[1-9][0-9]{3}[\s]?[A-Za-z]{2}$/i, 'Bijv. 1234AB')
+        .matches(/^[1-9][0-9]{3}[\s]?[A-Za-z]{2}$/i, 'Vul hier een geldige postcode in')
         .required('Verplicht'),
     houseNumber: Yup.number()
-        .integer('Vul een getal in')
-        .positive('Ongeldig')
+        .integer('Vul hier een geldig huisnummer in')
+        .positive('Vul hier een geldig huisnummer in')
         .required('Verplicht'),
-    streetAddress: Yup.string(),
-    city: Yup.string(),
+    streetAddress: Yup.string()
+        .required('Verplicht'),
+    city: Yup.string()
+        .required('Verplicht'),
     email: Yup.string()
-        .email('Bijv. email@voorbeeld.nl'),
+        .email('Vul hier een geldig e-mailadres in'),
 });
 
 const fieldsPerPage = [
@@ -53,7 +59,7 @@ class SubscriptionForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 0,
+            page: 1,
         };
     };
 
@@ -69,9 +75,6 @@ class SubscriptionForm extends React.Component {
 
         return (
             <Formik initialValues={initialValues}
-                    validate={values => {
-                        console.log(values);
-                    }}
                     validationSchema={validationSchema}
                     onSubmit={(values) => console.log('values:', values)}
                     render={({errors, values}) => (
@@ -82,10 +85,11 @@ class SubscriptionForm extends React.Component {
                             {this.state.page === pages.length - 1 ? <button type="submit">Naar betalen</button> :
                                 <button type="button" onClick={this.nextPage}
                                         disabled={this.hasErrors(values, errors)}>Verder</button>}
+                            {/*{this.getAddress(values)}*/}
+                            {Debug()}
                         </Form>
                     )}
-            >
-            </Formik>
+            />
         );
     };
 
@@ -104,6 +108,7 @@ const initialValues = {
     bdayDay: '',
     bdayMonth: '',
     bdayYear: '',
+    other: '',
     postalCode: '',
     houseNumber: '',
     addition: '',
@@ -114,3 +119,50 @@ const initialValues = {
 };
 
 export default SubscriptionForm;
+
+
+
+
+import { FormikConsumer } from 'formik';
+
+export const Debug = () => (
+    <div
+        style={{
+            margin: '3rem 0',
+            borderRadius: 4,
+            background: '#f6f8fa',
+
+            boxShadow: '0 0 1px  #eee inset',
+        }}
+    >
+        <div
+            style={{
+                textTransform: 'uppercase',
+                fontSize: 11,
+                borderTopLeftRadius: 4,
+                borderTopRightRadius: 4,
+                fontWeight: 500,
+                padding: '.5rem',
+                background: '#555',
+                color: '#fff',
+                letterSpacing: '1px',
+            }}
+        >
+            Formik State
+        </div>
+        <FormikConsumer>
+            {({ validationSchema, validate, onSubmit, ...rest }) => (
+                <pre
+                    style={{
+                        fontSize: '.65rem',
+                        padding: '.25rem .5rem',
+                        overflowX: 'scroll',
+                        fontSize: 11,
+                    }}
+                >
+          {JSON.stringify(rest, null, 2)}
+        </pre>
+            )}
+        </FormikConsumer>
+    </div>
+);

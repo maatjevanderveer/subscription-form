@@ -1,6 +1,5 @@
 import React from 'react';
 import {Field, ErrorMessage} from 'formik';
-import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
 export class FormPersonalDetails extends React.Component {
@@ -32,32 +31,24 @@ export class FormPersonalDetails extends React.Component {
                     <Field type="numeric"
                            name="bdayDay"
                            autoComplete="bday-day"
-                           placeholder="Dag"
+                           placeholder="DD"
                            maxLength="2"/>
                     <ErrorMessage name="bdayDay">
                         {msq => <div>{msq}</div>}
                     </ErrorMessage>
-                    <Field component="select"
+                    <Field type="numeric"
                            name="bdayMonth"
                            autoComplete="bday-month"
-                           placeholder="Maand">
-                        <option value="januari">januari</option>
-                        <option value="februari">februari</option>
-                        <option value="maart">maart</option>
-                        <option value="april">april</option>
-                        <option value="mei">mei</option>
-                        <option value="juni">juni</option>
-                        <option value="juli">juli</option>
-                        <option value="augustus">augustus</option>
-                        <option value="september">september</option>
-                        <option value="oktober">oktober</option>
-                        <option value="november">november</option>
-                        <option value="december">december</option>
+                           placeholder="MM"
+                           maxLength="2">
                     </Field>
+                    <ErrorMessage name="bdayMonth">
+                        {msq => <div>{msq}</div>}
+                    </ErrorMessage>
                     <Field type="numeric"
                            name="bdayYear"
                            autoComplete="bday-year"
-                           placeholder="Jaar"
+                           placeholder="JJJJ"
                            maxLength="4"/>
                     <ErrorMessage name="bdayYear">
                         {msq => <div>{msq}</div>}
@@ -75,11 +66,10 @@ export class FormPersonalDetails extends React.Component {
                            value="man"
                            id="man"/>
                     <label htmlFor="man">Man</label>
-                    <Field type="radio"
-                           name="gender"
-                           value="anders"
+                    <Field type="text"
+                           name="other"
+                           placeholder="anders"
                            id="anders"/>
-                    <label htmlFor="anders">Anders</label>
                 </label>
                 <br/>
             </React.Fragment>

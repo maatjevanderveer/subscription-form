@@ -5,9 +5,9 @@ export class FormNewAccount extends React.Component {
     render() {
         return(
             <React.Fragment>
-                <p>Maak hier je account aan voor <strong>cineville.nl</strong>: dan regel je makkelijk alles zelf, zoals
-                    het bijhouden van je watchlist en het maken van reserveringen.</p>
-                <p><strong>Heb je al een account?</strong> <em>Log hier in.</em></p>
+                <p>Hier maak je je online account voor cineville.nl. Als Cineviller kun je in je account zien welke films
+                    je al bezocht hebt en welke op je wachtlist staan, je maakt </p>
+                <p><strong>Heb je al een account?</strong> <em>Log in.</em></p>
                 <label>E-mailadres:
                 <Field type="email"
                        name="email"
@@ -21,6 +21,7 @@ export class FormNewAccount extends React.Component {
                 <label>Wachtwoord
                 <Field type="password"
                        name="password"
+                       autoComplete="new-password"
                        placeholder="E-mailadres"/>
                 </label>
             </React.Fragment>
