@@ -17,18 +17,23 @@ export class FormPhoto extends React.Component {
                 y: 10,
                 width: 50,
                 aspect: 3/4,
-            }
+            },
+            fileUrl: '',
         }
     }
 
     handleCropComplete = (crop, pixelCrop) => {
         console.log('handleCropComplete', crop, pixelCrop);
-        console.log('complete', this.state.src);
+        console.log('complete crop', this.state.src);
 
         const canvas = this.imagePreviewCanvasRef.current;
         const src = this.state.src;
 
-        updateCanvas(canvas, src, pixelCrop).then(fileUrl => console.log(fileUrl));
+        updateCanvas(canvas, src, pixelCrop).then(
+            fileUrl => this.setState({ fileUrl })
+        );
+
+        console.log('state fileUrl after updating Canvas', this.state.fileUrl);
     };
 
     handleCropChange = (crop) => {
@@ -66,8 +71,9 @@ export class FormPhoto extends React.Component {
                                onComplete={this.handleCropComplete} />
                 )}
                 <br />
-                <p>Preview Canvas Crop</p>
-                <canvas ref={this.imagePreviewCanvasRef} />
+                <label>Foto:
+                    <canvas ref={this.imagePreviewCanvasRef} />
+                </label>
                 <label>
                     <Field type="checkbox"
                            name="consentPhoto"/>
@@ -76,6 +82,7 @@ export class FormPhoto extends React.Component {
                         {msq => <div>{msq}</div>}
                     </ErrorMessage>
                 </label>
+                <br />
             </React.Fragment>
         )
     }

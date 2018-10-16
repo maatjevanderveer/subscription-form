@@ -8,7 +8,7 @@ import {FormPhoto} from './form-photo.js';
 import * as Yup from 'yup';
 import _ from 'underscore';
 
-const pages = [<FormPersonalDetails/>, <FormShippingAddress/>, <FormNewAccount/>, <FormPhoto/>];
+const pages = [<FormPersonalDetails/>, <FormShippingAddress/>, <FormNewAccount/>, <FormPhoto />];
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -49,6 +49,7 @@ const validationSchema = Yup.object().shape({
     email: Yup.string()
         .email('Vul hier een geldig e-mailadres in')
         .required('Verplicht'),
+    photo: Yup.string().required('Upload hier een foto'),
     consentPhoto: Yup.bool()
         .test('consentPhoto', 'Dit vinkje is verplicht: als je geen toestemming geeft, is het helaas niet mogelijk om een Cineville-abonnement af te sluiten. Jouw Cinevillepas is persoonsgebonden en op deze manier kun je je legitimeren aan de kassa van een filmtheater', value => value === true)
         .required('Dit vinkje is verplicht: als je geen toestemming geeft, is het helaas niet mogelijk om een Cineville-abonnement af te sluiten. Jouw Cinevillepas is persoonsgebonden en op deze manier kun je je legitimeren aan de kassa van een filmtheater'),
@@ -58,7 +59,7 @@ const fieldsPerPage = [
     ['firstName', 'lastName', 'bdayDay', 'bdayYear'],
     ['postalCode', 'houseNumber', 'streetAddress', 'city'],
     ['email', 'password'],
-    ['consentPhoto']
+    ['consentPhoto', 'photo']
 ];
 
 class SubscriptionForm extends React.Component {
@@ -81,7 +82,7 @@ class SubscriptionForm extends React.Component {
             <Formik initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={(values) => console.log('values:', values)}
-                    render={({errors, values}) => (
+                    render={({errors, values }) => (
                         <Form>
                             {pages[this.state.page]}
                             {this.state.page === 0 ? null :
@@ -118,6 +119,7 @@ const initialValues = {
     city: '',
     email: '',
     password: '',
+    photo: '',
     consentPhoto: '',
 };
 
