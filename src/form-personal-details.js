@@ -2,6 +2,8 @@ import React from 'react';
 import {Field, ErrorMessage} from 'formik';
 import PropTypes from 'prop-types';
 
+
+
 export class FormPersonalDetails extends React.Component {
     render() {
         return (

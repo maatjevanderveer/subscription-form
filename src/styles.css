@@ -1,3 +1,12 @@
 h1 {
 	color: #08283A;
 }
+
+canvas {
+	border: 1px solid black;
+}
+
+img {
+	max-width: 200px;
+	max-height: 100%;
+}

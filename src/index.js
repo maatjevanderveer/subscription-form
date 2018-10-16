@@ -1,13 +1,14 @@
 import React from 'react';
-import { Formik, Form } from 'formik';
+import {Formik, Form} from 'formik';
 import './styles.css';
 import {FormPersonalDetails} from './form-personal-details.js';
 import {FormShippingAddress} from './form-shipping-address.js';
 import {FormNewAccount} from './form-new-account.js';
+import {FormPhoto} from './form-photo.js';
 import * as Yup from 'yup';
 import _ from 'underscore';
 
-const pages = [<FormPersonalDetails/>, <FormShippingAddress/>, <FormNewAccount/>];
+const pages = [<FormPersonalDetails/>, <FormShippingAddress/>, <FormNewAccount/>, <FormPhoto/>];
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -46,29 +47,32 @@ const validationSchema = Yup.object().shape({
     city: Yup.string()
         .required('Verplicht'),
     email: Yup.string()
-        .email('Vul hier een geldig e-mailadres in'),
+        .email('Vul hier een geldig e-mailadres in')
+        .required('Verplicht'),
+    consentPhoto: Yup.bool()
+        .test('consentPhoto', 'Dit vinkje is verplicht: als je geen toestemming geeft, is het helaas niet mogelijk om een Cineville-abonnement af te sluiten. Jouw Cinevillepas is persoonsgebonden en op deze manier kun je je legitimeren aan de kassa van een filmtheater', value => value === true)
+        .required('Dit vinkje is verplicht: als je geen toestemming geeft, is het helaas niet mogelijk om een Cineville-abonnement af te sluiten. Jouw Cinevillepas is persoonsgebonden en op deze manier kun je je legitimeren aan de kassa van een filmtheater'),
 });
 
 const fieldsPerPage = [
     ['firstName', 'lastName', 'bdayDay', 'bdayYear'],
     ['postalCode', 'houseNumber', 'streetAddress', 'city'],
-    ['email', 'password']
+    ['email', 'password'],
+    ['consentPhoto']
 ];
 
 class SubscriptionForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 1,
+            page: 3,
         };
     };
 
     hasErrors = (values, errors) => {
+        // TODO: Doesn't do anything with values atm, is it necessary though?
         const pageErrors = _.pick(errors, fieldsPerPage[this.state.page]);
-        if (Object.keys(pageErrors).length !== 0) {
-            return true;
-        }
-        return false;
+        return Object.keys(pageErrors).length !== 0;
     };
 
     render() {
@@ -82,10 +86,8 @@ class SubscriptionForm extends React.Component {
                             {pages[this.state.page]}
                             {this.state.page === 0 ? null :
                                 <button type="button" onClick={this.previousPage}>Vorige</button>}
-                            {this.state.page === pages.length - 1 ? <button type="submit">Naar betalen</button> :
                                 <button type="button" onClick={this.nextPage}
-                                        disabled={this.hasErrors(values, errors)}>Verder</button>}
-                            {/*{this.getAddress(values)}*/}
+                                        disabled={this.hasErrors(values, errors)}>Verder</button>
                             {Debug()}
                         </Form>
                     )}
@@ -115,15 +117,14 @@ const initialValues = {
     streetAddress: '',
     city: '',
     email: '',
-    password: ''
+    password: '',
+    consentPhoto: '',
 };
 
 export default SubscriptionForm;
 
 
-
-
-import { FormikConsumer } from 'formik';
+import {FormikConsumer} from 'formik';
 
 export const Debug = () => (
     <div
@@ -151,7 +152,7 @@ export const Debug = () => (
             Formik State
         </div>
         <FormikConsumer>
-            {({ validationSchema, validate, onSubmit, ...rest }) => (
+            {({validationSchema, validate, onSubmit, ...rest}) => (
                 <pre
                     style={{
                         fontSize: '.65rem',
